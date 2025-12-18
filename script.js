@@ -117,24 +117,27 @@ let taskDetailInput = document.querySelector("form textarea");
 
 let showTaks = document.querySelector(".showTaks");
 
-let allTask = JSON.parse(localStorage.getItem('tasks'))||[];
+let allTask = JSON.parse(localStorage.getItem("tasks")) || [];
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
+
   allTask.push({
     task: taskInput.value,
     details: taskDetailInput.value,
   });
+
   localStorage.setItem("tasks", JSON.stringify(allTask));
 
-  console.log(allTask);
   renderTaks();
 });
 
 function renderTaks() {
   showTaks.innerHTML = "";
-  allTask.forEach((elm,idx) => {
+
+  allTask.forEach((elm, idx) => {
     let div = document.createElement("div");
+
     div.innerHTML = `
             <div class="task">
                 <h4>${elm.task}</h4>
@@ -142,14 +145,17 @@ function renderTaks() {
             </div>
   `;
     showTaks.appendChild(div);
-
-   
   });
+  let taskDeleteBtn = document.querySelectorAll(".task button");
+  taskDeleteBtn.forEach((taskBtn) => {
+    taskBtn.addEventListener("click", () => {
+      allTask.splice(taskBtn.id, 1);
 
-  
+      localStorage.setItem("tasks", JSON.stringify(allTask));
+
+      renderTaks();
+    });
+  });
 }
 renderTaks();
-
-
-
 
